@@ -1,21 +1,75 @@
 <?php
-$page_title="Login ";
-include_once "header.php";
+require_once 'config/database.php';
+include_once 'users.php';
+/*if($user->is_loggedin()!="")
+{
+ $user->redirect('home.php');
+}*/
+$database=new Database();
+$db=$database->getConnection();
+$user=new USER($db);
+if(isset($_POST['btn-login']))
+{
+// $uname = $_POST['txt_uname_email'];
+ $umail = $_POST['txt_uname_email'];
+ $upass = $_POST['txt_password'];
+  
+ $role=$user->login($umail,$upass);
+ if($role==1)
+ {
+ 	//$error="right details";
+  $user->redirect('admin/admin.php');
+ }
+ else if($role==2)
+ {
+ 	$user->redirect('employee/emp.php');
+ }
+ else
+ {
+  $error = "Wrong Details !";
+ } 
+}
 ?>
-<div class="row">
-	<div class="col-md-4">
-		<form method="POST" action="login.php">
-			<select name="role" class="form-control">
-				<option value="1" >Admin</option>
-				<option value="2">User</option>
-			</select>
-			<label>Username</label>
-			<input type="email" name="Username" class="form-control">
-			<label>Passowrd</label>
-			<input type="password" name="passowrd" class="form-control">
-		</form>
-	</div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Login : cleartuts</title>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css"  />
+<link rel="stylesheet" href="style.css" type="text/css"  />
+</head>
+<body>
+<div class="container">
+     <div class="form-container">
+        <form method="post">
+            <h2>Sign in.</h2><hr />
+            <?php
+            if(isset($error))
+            {
+                  ?>
+                  <div class="alert alert-danger">
+                      <i class="glyphicon glyphicon-warning-sign"></i> &nbsp; <?php echo $error; ?> !
+                  </div>
+                  <?php
+            }
+            ?>
+            <div class="form-group">
+             <input type="text" class="form-control" name="txt_uname_email" placeholder="Username or E mail ID" required />
+            </div>
+            <div class="form-group">
+             <input type="password" class="form-control" name="txt_password" placeholder="Your Password" required />
+            </div>
+            <div class="clearfix"></div><hr />
+            <div class="form-group">
+             <button type="submit" name="btn-login" class="btn btn-block btn-primary">
+                 <i class="glyphicon glyphicon-log-in"></i>&nbsp;SIGN IN
+                </button>
+            </div>
+            <br />
+            <label>Don't have account yet ! <a href="sign-up.php">Sign Up</a></label>
+        </form>
+       </div>
 </div>
-<?php
-include_once "footer.php";
- ?>
+
+</body>
+</html>

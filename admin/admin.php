@@ -1,13 +1,10 @@
 <?php
 // page given in URL parameter, default page is one
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
- 
 // set number of records per page
 $records_per_page = 5;
- 
 // calculate for the query LIMIT clause
 $from_record_num = ($records_per_page * $page) - $records_per_page;
- 
 // retrieve records here
 include_once '../config/database.php';
 include_once 'class/office.php';
@@ -29,7 +26,6 @@ include_once "../header.php";
 <?php
 
 if($num>0){
- 
     echo "<table class='table table-hover table-responsive table-bordered'>";
         echo "<tr>";
             echo "<th>Office Name</th>";
@@ -55,11 +51,12 @@ if($num>0){
 				    <span class='glyphicon glyphicon-list'></span> Read
 				</a>
 				 
-				<a href='update_product.php?id={$id}' class='btn btn-info left-margin'>
+				<a href='update/update_office.php?id={$id}' class='btn btn-info left-margin'>
 				    <span class='glyphicon glyphicon-edit'></span> Edit
 				</a>
 				 
-				<a delete-id='{$id}' class='btn btn-danger delete-object'>
+				<a href ='delete/delete_office.php?id={$id}'
+                class='btn btn-danger delete-object'>
 				    <span class='glyphicon glyphicon-remove'></span> Delete
 				</a>";
                 echo "</td>";
@@ -69,15 +66,12 @@ if($num>0){
         }
  
     echo "</table>";
- 
     // paging buttons will be here
 }
- 
 // tell the user there are no products
 else{
     echo "<div class='alert alert-info'>No products found.</div>";
 }
-
 // the page where this paging is used
 $page_url = "index.php?";
  
